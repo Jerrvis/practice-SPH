@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header></Header>
+    <!-- 路由组件 -->
+    <router-view></router-view>
+    <!-- <button @click="test">我是个按钮</button> -->
+    <Footer></Footer>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from './components/header'
+import Footer from './components/footer'
+import { onMounted } from '@vue/runtime-core'
+import { useStore } from 'vuex'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name:'app',
+  components:{Header,Footer},
+  setup(){
+    const store = useStore()
+    // 获取商品分类三级列表的数据
+    onMounted(()=>{
+      store.dispatch("categoryList");
+      store.dispatch('getBannerList');
+      store.dispatch('getFloorList');
+    })
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
