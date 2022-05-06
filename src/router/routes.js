@@ -35,6 +35,18 @@ const routes = [
     path:'/detail/:skuid',
     component:()=> import('../pages/Detail'),
     meta:{show:true}
+  },
+  {
+    path:'/addcartsuccess',
+    name:'addcartsuccess',
+    component:()=> import('../pages/AddCartSuccess'),
+    meta:{show:true}
+  },
+  {
+    path:'/shopcart',
+    name:'shopcart',
+    component:()=> import('../pages/ShopCart'),
+    meta:{show:true}
   }
 
 ]

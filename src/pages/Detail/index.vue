@@ -99,12 +99,13 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum"/>
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum--">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 路由跳转之前发送请求 -->
+                <a href="javascript:" @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -343,11 +344,11 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, onMounted } from "@vue/runtime-core";
+import { computed, onBeforeMount, onMounted, ref, watch } from "@vue/runtime-core";
 import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
 import { mapGetters, useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Detail",
@@ -360,9 +361,17 @@ export default {
   setup() {
     let store = useStore();
     let route = useRoute();
+    let router = useRouter();
+
+    let skuNum = ref(1)
 
     onMounted(() => {
       store.dispatch("getGoodInfo", route.params.skuid);
+      watch(skuNum,()=>{
+        if(skuNum.value < 1){
+          skuNum.value = 1
+        }
+      })
     });
     // 获取商品信息
     const categoryView = computed(
@@ -378,11 +387,27 @@ export default {
       })
     );
 
+    let addShopcar = function(){
+      const skuAdd = {skuId:route.params.skuid,skuNum:skuNum.value}
+      try {
+        store.dispatch('addOrUpdateShopCart',skuAdd)
+        //  转为JSON格式，会话存储
+        sessionStorage.setItem("SKUINFO",JSON.stringify(skuInfo.value))
+        // 成功：路由跳转
+        router.push({name:'addcartsuccess',query:{skuNum:skuNum.value}})
+      } catch (error) {
+        // 失败：路由提示
+        alert(error.message)
+      }
+    }
+
     return {
       categoryView,
       skuInfo,
       store,
       skuSaleAttrValueList,
+      skuNum,
+      addShopcar
     };
   },
 };
