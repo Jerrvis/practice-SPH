@@ -6,16 +6,20 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!haveUserInfo">
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
           </p>
+          <p v-else>
+            <router-link to="/center">{{userName}}</router-link>
+            <a class="register" @click="logout">退出登陆</a>
+          </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
-          <a href="###">我的尚品汇</a>
+          <router-link to="/center/myorder">我的订单</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
+          <router-link to="/center">我的尚品汇</router-link>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
           <a href="###">关注尚品汇</a>
@@ -54,10 +58,12 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref, getCurrentInstance } from "vue";
+import { onMounted, ref, getCurrentInstance, onBeforeUnmount, computed } from "vue";
+import { useStore } from 'vuex';
 export default {
   name: "",
   setup() {
+    const store = useStore()
     const router = useRouter();
     const route = useRoute();
     let keyword = ref("");
@@ -81,11 +87,48 @@ export default {
     onMounted(()=>{
         bus.on("clearKeyword",()=>{
           keyword.value = '';
-        })
+        });
+        // 如果有token 则获取信息
+        if(store.state.user.token){
+          try {
+            store.dispatch('getUserInfo')
+          } catch (error) {
+            // 失效错误，清理token重新登陆
+            console.log(error)
+          }
+        }
       })
+
+    onBeforeUnmount(()=>{
+      bus.off("clearKeyword")
+    })
+
+    let haveUserInfo = computed(()=>{
+      if(store.state.user.userInfo.name){
+        userName.value = store.state.user.userInfo.name
+        return true
+      }
+      return false
+    })
+
+    let userName = ref('')
+
+    // 退出登陆
+    let logout = function(){
+      // 向服务器发送通知
+      try {
+        store.dispatch('userLogout')
+        router.push('home')
+      } catch (error) {
+        console.log(error)
+      }
+    }
     return {
         goSearch,
         keyword,
+        haveUserInfo,
+        userName,
+        logout
     };
   },
 };

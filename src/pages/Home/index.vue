@@ -24,7 +24,7 @@ import Brand from '@/pages/Home/Brand'
 // 引入vuex
 import { mapState } from 'vuex';
 import store from '@/store'
-import { computed } from '@vue/runtime-core'
+import { computed, onMounted } from '@vue/runtime-core'
 export default {
   name:'Home',
   components: { 
@@ -41,6 +41,7 @@ export default {
   setup(){
     // let count = computed(()=>{return store.state.home.count})
     // let add = ()=>{store.dispatch("countAdd",'home')}
+    
     return {
       // count
     }

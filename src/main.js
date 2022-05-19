@@ -18,6 +18,8 @@ import store from '@/store'
 
 import '@/mock/mockServe';
 
+import * as API from '@/api'
+
 // 注册轮播图组件
 import MySwiper from '@/components/MySwiper'
 
@@ -31,6 +33,8 @@ app.use(store);
 
 // 创建事件总线
 app.config.globalProperties.$bus = new mitt();
+// 全局引入api
+app.config.globalProperties.$api = API;
 
 // 注册全局组件
 app.component('type-nav',TypeNav);
