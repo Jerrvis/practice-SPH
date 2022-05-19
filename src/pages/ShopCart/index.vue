@@ -84,8 +84,8 @@
           <i class="summoney">{{ sum }}</i>
         </div>
         <div class="sumbtn">
-          <button @click="test">测试</button>
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <!-- <button @click="test">测试</button> -->
+          <router-link to="/trade">结算</router-link>
         </div>
       </div>
     </div>

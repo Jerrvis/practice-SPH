@@ -24,6 +24,11 @@ requests.interceptors.request.use((config)=>{
     // 给请求头添加userTempId(与后端协商好了)
     config.headers.userTempId = store.state.detail.uuid_token
   }
+  // 给请求头添加token
+  if(store.state.user.token){
+    config.headers.token = store.state.user.token
+    console.log(config.headers.token)
+  }
   // 进度条开始
   nprogress.start();
   // config 为配置对象，

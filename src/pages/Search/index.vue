@@ -201,6 +201,7 @@ import {
   watch,
   getCurrentInstance,
   ref,
+  onBeforeUnmount,
 } from "@vue/runtime-core";
 import { mapGetters, useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
@@ -256,15 +257,17 @@ export default {
 
     onMounted(() => {
       getData();
-    });
-
-    // 监听售卖属性添加
-    bus.on("attrInfo", (attrData) => {
+      // 监听售卖属性添加
+      bus.on("attrInfo", (attrData) => {
       if (searchParams.props.indexOf(attrData) < 0)
         searchParams.props.push(attrData);
-      console.log(searchParams.props);
       getData();
+      })
     });
+
+    onBeforeUnmount(()=>{
+      bus.off('attrInfo')
+    })
 
     // 监视route 搜索界面中搜索内容时向服务器提交数据
     watch(route, (newValue, oldValue) => {

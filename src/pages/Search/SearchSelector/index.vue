@@ -51,7 +51,6 @@ export default {
     );
 
     let csl = function(){
-      console.log(trademarkList)
     }
 
     // 添加品牌名

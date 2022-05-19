@@ -68,18 +68,27 @@
 <script>
 import { ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
   export default {
     name: 'Login',
     setup(props) {
 
       const store = useStore()
+      const router = useRouter()
 
       let phone = ref('')
       let password = ref('')
 
-      let login = function(){
-        const user = {phone:phone.value,password:password.value}
-        store.dispatch('login',user)
+      let login =async function(){
+        try {
+          const user = {phone:phone.value,password:password.value}
+          store.dispatch('login',user).then(v=>{
+            store.dispatch('getUserInfo')
+          })
+          router.push('/home')
+        } catch (error) {
+          alert(error)
+        }
       }
 
       return{

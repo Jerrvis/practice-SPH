@@ -76,3 +76,38 @@ export const reqRegister = (data)=>{
 export const reqLogin = (data)=>{
   return requests({url:`/user/passport/login`,data,method:'post'})
 }
+
+// 获取用户信息
+export const reqUserInfo = ()=>{
+  return requests({url:`/user/passport/auth/getUserInfo`,method:'get'})
+}
+
+// 退出登陆
+export const reqLogout = ()=>{
+  return requests({url:`/user/passport/logout`,method:'get'})
+}
+
+// 获取用户地址信息
+export const reqAddressInfo = ()=>{
+  return requests({url:`/user/userAddress/auth/findUserAddressList`,method:'get'})
+}
+
+// 获取商品结算清单
+export const reqOrderInfo = ()=>{
+  return requests({url:`/order/auth/trade`,method:'get'})
+}
+
+// 支付(提交订单)
+export const reqSubOrder = (tradeNo,data)=>{
+  return requests({url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,data,method:'post'})
+}
+
+// 获取订单支付信息
+export const reqPayOrder = (orderId)=>{
+  return requests({url:`/payment/weixin/createNative/${orderId}`,method:'get'})
+}
+
+// 获取订单支付状态
+export const reqOrderStatus = (orderId)=>{
+  return requests({url:`/payment/weixin/queryPayStatus/${orderId}`,method:'get'})
+}

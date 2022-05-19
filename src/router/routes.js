@@ -2,6 +2,7 @@
 const routes = [
   {
     path:'/',
+    redirect:'home',
     component:()=> import('../pages/Home'),
     meta:{show:true}
   },
@@ -47,8 +48,47 @@ const routes = [
     name:'shopcart',
     component:()=> import('../pages/ShopCart'),
     meta:{show:true}
+  },
+  {
+    path:'/trade',
+    name:'trade',
+    component:()=> import('../pages/Trade'),
+    meta:{show:false}
+  },
+  {
+    path:'/pay',
+    name:'pay',
+    component:()=> import('../pages/Pay'),
+    meta:{show:false}
+  },
+  {
+    path:'/paysuccess',
+    name:'paysuccess',
+    component:()=> import('../pages/PaySuccess'),
+    meta:{show:false}
+  },
+  {
+    path:'/center',
+    name:'center',
+    component:()=> import('../pages/Center'),
+    meta:{show:false},
+    children:[
+      {
+        path:'/center/myorder',
+        name:'myorder',
+        component:()=>import('../pages/Center/MyOrder')
+      },
+      {
+        path:'/center/grouporder',
+        name:'grouporder',
+        component:()=>import('../pages/Center/GroupOrder')
+      },
+      {
+        path:'/center/',
+        redirect:'myorder',
+      }
+    ]
   }
-
 ]
 
 
