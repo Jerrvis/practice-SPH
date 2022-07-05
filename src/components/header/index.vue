@@ -51,6 +51,7 @@
             搜索
           </button>
         </form>
+                      <button id='test' @click="test">测试</button>
       </div>
     </div>
   </header>
@@ -123,12 +124,30 @@ export default {
         console.log(error)
       }
     }
+
+    let scTop;
+
+    let test = function (){
+      if(document.body.clientHeight&&document.documentElement.clientHeight){
+            scTop = Math.min(document.body.clientHeight,document.documentElement.clientHeight)
+        }else{
+            scTop = Math.max(document.body.clientHeight,document.documentElement.clientHeight)
+      }
+      if(document.documentElement&&document.documentElement.scrollTop){
+            scTop = document.documentElement.scrollTop
+        }else if(document.body){
+            scTop = document.body.scrollTop
+        }
+        scTop = Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)
+      console.log(scTop)
+    }
     return {
         goSearch,
         keyword,
         haveUserInfo,
         userName,
-        logout
+        logout,
+        test
     };
   },
 };

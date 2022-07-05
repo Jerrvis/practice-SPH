@@ -25,11 +25,18 @@ import MySwiper from '@/components/MySwiper'
 
 // 全局事件总线 on 函数
 import mitt from "mitt"
+// 图片懒加载插件
+import lazyPlugin from 'vue3-lazy'
 
 const app = createApp(App);
 
 app.use(router);
 app.use(store);
+// 使用懒加载
+app.use(lazyPlugin,{
+  loading: require('@/assets/fadingGirl_border_radius.png'), // 图片加载时默认图片
+  error: require('@/assets/KhakiBlue_border_radius.png') // 图片加载时错误图片
+})
 
 // 创建事件总线
 app.config.globalProperties.$bus = new mitt();
